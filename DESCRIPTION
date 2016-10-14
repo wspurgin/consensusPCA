@@ -1,9 +1,12 @@
 Package: consensusPCA
-Title: What the Package Does (one line, title case)
+Title: Principal Component Analysis by Consensus
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Will", "Spurgin", email = "wspurgin@smu.edu", role = c("aut", "cre"))
+Description: This is package for performing Principal Component
+  Analysis by Consensus. Consensus PCA combines the ideas of concensus
+  classification and clustering stability to create a estimated population PCA
+  from multiple sample PCAs.
 Depends: R (>= 3.2.2)
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
