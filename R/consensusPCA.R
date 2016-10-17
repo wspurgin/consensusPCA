@@ -44,11 +44,7 @@ cosine_difference <- function(a,b) {
     # Sometimes, especially when two vectors are the same, we get plagued by
     # roundoff putting our answer just out of the defined range of acos. So
     # we'll move it if necessary.
-    if (inverse_theta > 1) {
-      inverse_theta <- ifelse(abs(inverse_theta - 1) < 1e-6, 1, inverse_theta)
-    } else {
-      inverse_theta <- ifelse(abs(inverse_theta - -1) < 1e-6, -1, inverse_theta)
-    }
+    inverse_theta <- round(inverse_theta, 6)
   }
   acos( inverse_theta )
 }
