@@ -65,20 +65,26 @@ stabilization_analysis <- function(consensus_set) {
   num_pc <- length(consensus_set[[1]]$center) #TODO error checking if 0-length consensus set
   pc_stability <- list()
   k <- consensus_size * consensus_size
+  max_var <- max(sapply(consensus_set, function(p) { p$sdev[1] }))^2
   for( l in 1:num_pc) {
     name <- paste("PC", l, sep = "")
     pc_res <- list()
     pc_res$cosine_difference <- matrix(data = rep(0, k), nrow = consensus_size, ncol = consensus_size)
+    pc_res$max_var <- 0.0
     for (i in 1:consensus_size) {
       partial_pca <- consensus_set[[i]]
       for (j in 1:consensus_size) {
         other <- consensus_set[[j]]
-        pc_res$cosine_difference[j, i] <- cosine_difference_degrees( abs(partial_pca$rotation[,l]), abs(other$rotation[,l]) )
+        pc_res$cosine_difference[j, i] <- zapsmall(cosine_difference( abs(partial_pca$rotation[,l]), abs(other$rotation[,l]) ), 7)
       }
+      pc_res$max_var <- ifelse(pc_res$max_var < partial_pca$sdev[l]^2, partial_pca$sdev[l]^2, pc_res$max_var)
     }
-    pc_res$absolute_difference <- sum(pc_res$cosine_difference)
+    pc_res$absolute_difference <- sum(apply(pc_res$cosine_difference, 2, sum))
     pc_res$mean_difference <- mean(pc_res$cosine_difference)
-    pc_res$stdev <- sd(pc_res$cosine_difference)
+    pc_res$dir_stab_score <- pc_res$mean_difference / 2 / pi
+    pc_res$dir_stab_score <- pc_res$absolute_difference / 2 / pi / consensus_size^2
+    pc_res$var_stab_score <- pc_res$max_var / max_var
+    pc_res$stability_score <- pc_res$dir_stab_score / pc_res$var_stab_score
     pc_stability[[name]] <- pc_res
   }
   pc_stability
