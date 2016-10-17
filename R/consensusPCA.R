@@ -27,7 +27,11 @@ reconcile <- function(consensus) {
   total$center   <- total$center / n
 
   # Orthonormalize the resultant, averaged rotation.
+  r_names <- rownames(total$rotation)
+  c_names <- colnames(total$rotation)
   total$rotation <- qr.Q(qr(total$rotation))
+  rownames(total$rotation) <- r_names
+  colnames(total$rotation) <- c_names
   total
 }
 
