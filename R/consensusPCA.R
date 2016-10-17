@@ -77,10 +77,9 @@ stabilization_analysis <- function(consensus_set) {
     }
     pc_res$absolute_difference <- sum(apply(pc_res$cosine_difference, 2, sum))
     pc_res$mean_difference <- mean(pc_res$cosine_difference)
-    pc_res$dir_stab_score <- pc_res$mean_difference / 2 / pi
-    pc_res$dir_stab_score <- pc_res$absolute_difference / 2 / pi / consensus_size^2
+    pc_res$dir_stab_score <- pc_res$absolute_difference * 2 / pi / consensus_size
     pc_res$var_stab_score <- pc_res$max_var / max_var
-    pc_res$stability_score <- pc_res$dir_stab_score / pc_res$var_stab_score
+    pc_res$stability_score <- pc_res$dir_stab_score * pc_res$var_stab_score
     pc_stability[[name]] <- pc_res
   }
   pc_stability
